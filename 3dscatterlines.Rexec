@@ -1,0 +1,36 @@
+library("rgl")
+
+args = commandArgs(trailingOnly=TRUE)
+
+data <- read.csv((args[1]), header=TRUE, fill=TRUE, sep=',')
+
+w <- names(data[10])
+
+gradient <- colorRampPalette(c("red", "orange", "yellow", "green", "blue", "violet"))
+
+v <- gradient(10)[as.numeric(cut(data[[w]], breaks=10))]
+
+segments3d(x=as.vector(t(log(data[,c(2,4)]))),
+           y=as.vector(t(data[,c(11,12)])),
+           z=as.vector(t(log(data[,c(3,5)]))),
+           xlab="rpmn", ylab="round", zlab="rpmt", axes=FALSE, col = rep(v, each =2), plot=TRUE)
+
+segments3d(x=as.vector(t(log(data[,c(4,6)]))),
+           y=as.vector(t(data[,c(12,13)])),
+           z=as.vector(t(log(data[,c(5,7)]))),
+           xlab="rpmn", ylab="round", zlab="rpmt", axes=FALSE, col=rep(v, each=2), plot=TRUE)
+
+segments3d(x=as.vector(t(log(data[,c(6,8)]))),
+           y=as.vector(t(data[,c(13,14)])),
+           z=as.vector(t(log(data[,c(7,9)]))),
+           xlab="rpmn", ylab="round", zlab="rpmt", axes=FALSE, col=rep(v, each=2), plot=TRUE)
+
+rgl.bbox(color="grey50", emission="grey50",
+         xat = log(10^((-1):6)), yat = c(1, 2, 3, 4), zat = log(10^((-1):6)), xlab=10^((-1):6), ylab = (1:4), zlab=10^((-1):6))
+
+aspect3d(1,1,1)
+
+writeWebGL(dir = "/home/arprater/Desktop()", filename = file.path("/home/arprater/Desktop", "test"))
+
+
+

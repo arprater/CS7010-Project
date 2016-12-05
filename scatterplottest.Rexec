@@ -4,7 +4,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 data = read.table((args[1]), header=TRUE, fill=TRUE,  sep="\t") 
 
-jpeg(args[2])
+pdf(args[2])
 
 x <- names(data)[2]
 
@@ -12,16 +12,17 @@ y <- names(data)[3]
 
 z <- names(data)[4] 
 
-gradient <- colorRampPalette(c("red", "orange", "yellow", "green", "blue", "violet")) 
+gradient <- colorRampPalette(c("red", "orange", "yellow", "green", "blue", "violet"))
 
 w <- gradient(100)[as.numeric(cut(data[[z]], breaks = 100))]
 
 plot (data[[x]], data[[y]], col = w,
       xlab=x, ylab=y,
       log="xy",
-      xlim=c(1,10^6), ylim=c(1,10^6),
+      xlim=c(0.1,10^6), ylim=c(0.1,10^6),
       axes = FALSE,
-      pch = 16)
+      pch = 16,
+      main = "(y) vs (x)")
       
 ticks = c(0.1, 1, 10, 100, 10^3, 10^4, 10^5, 10^6)
 

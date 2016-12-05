@@ -1,0 +1,22 @@
+library("rgl")
+
+args = commandArgs(trailingOnly=TRUE)
+
+data <- read.csv((args[1]), header=TRUE, fill=TRUE, sep=',')
+
+x <- names(data[2])
+y <- names(data[3])
+z <- names(data[4])
+w <- names(data[5])
+
+gradient <- colorRampPalette(c("red", "orange", "yellow", "green", "blue", "violet"))
+
+v <- gradient(100)[as.numeric(cut(data[[w]], breaks=100))]
+
+plot3d(log(data[[x]]), data[[z]], log(data[[y]]), type="s", size=0.75, lit=FALSE, xlab="rpmn", ylab="round", zlab="rpmt", axes=FALSE, col=v)
+
+rgl.bbox(color="grey50", emission="grey50",
+         xat = log(10^((-1):6)), yat = c(1, 2, 3, 4), zat = log(10^((-1):6)), xlab=10^((-1):6), ylab = (1:4), zlab=10^((-1):6))
+
+browseURL(paste("file://", writeWebGL(dir=file.path(tempdir(), "webGL"), 
+                                      width=500), sep=""))
